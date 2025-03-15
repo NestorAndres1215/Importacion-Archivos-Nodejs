@@ -1,0 +1,46 @@
+/* Estilos Generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fa;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor Principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Título */
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Botones */
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    text-decoration: none;
+    background: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}

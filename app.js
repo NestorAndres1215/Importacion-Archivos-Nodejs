@@ -1,62 +1,77 @@
-// app.js
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const db = require('./db'); // Importa la conexión a la base de datos
+const db = require('./db/database'); 
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = 3000;
 
-// Configura el almacenamiento de multer
+// Configurar EJS como motor de vistas
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'css')));
+app.use(express.static('uploads'));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configurar almacenamiento de archivos en memoria
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Asegúrate de que el directorio de subida existe
+// Verificar si la carpeta 'uploads' existe, si no, crearla
 const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)){
+if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-// Ruta para subir archivos
+// Ruta principal
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+// Ruta para subir archivos (Formulario)
+app.get('/upload', (req, res) => {
+    res.render('upload');
+});
+
+// Ruta para manejar la subida de archivos
 app.post('/upload', upload.single('file'), (req, res) => {
     const file = req.file;
 
     if (!file) {
-        return res.status(400).send('No se subió ningún archivo.');
+        return res.status(400).json({ success: false, message: 'No se subió ningún archivo.' });
     }
 
-    // Guarda el archivo en el sistema de archivos
+    // Guardar el archivo en el sistema de archivos
     const filePath = path.join(uploadDir, file.originalname);
     fs.writeFileSync(filePath, file.buffer);
 
-    // Inserta la información del archivo en la base de datos
-    const query = `
-        INSERT INTO file_model (name, type, data) 
-        VALUES (?, ?, ?)
-    `;
+    // Insertar en la base de datos
+    const query = `INSERT INTO file_model (name, type, data) VALUES (?, ?, ?)`;
 
     db.query(query, [file.originalname, file.mimetype, file.buffer], (err, result) => {
         if (err) {
-            console.error('Error al guardar en la base de datos: ', err);
-            return res.status(500).send('Error al guardar en la base de datos.');
+            console.error('Error al guardar en la base de datos:', err);
+            return res.status(500).json({ success: false, message: 'Error al guardar en la base de datos.' });
         }
-        res.send('Archivo subido y guardado en la base de datos con éxito. ID: ' + result.insertId);
+
+        // Responder con JSON en lugar de redirigir directamente
+        res.json({ success: true, message: 'Archivo subido exitosamente.' });
     });
 });
 
-// Ruta para listar archivos en formato JSON
+// Ruta para listar archivos
 app.get('/files', (req, res) => {
     const query = 'SELECT id, name, type FROM file_model';
 
     db.query(query, (err, results) => {
         if (err) {
-            console.error('Error al recuperar archivos: ', err);
+            console.error('Error al recuperar archivos:', err);
             return res.status(500).json({ error: 'Error al recuperar archivos.' });
         }
 
-        // Envía la lista de archivos en formato JSON
-        res.json(results);
+        res.render('files', { files: results });
     });
 });
 
@@ -67,7 +82,7 @@ app.get('/files/:id', (req, res) => {
 
     db.query(query, [fileId], (err, results) => {
         if (err) {
-            console.error('Error al recuperar el archivo: ', err);
+            console.error('Error al recuperar el archivo:', err);
             return res.status(500).json({ error: 'Error al recuperar el archivo.' });
         }
 
@@ -82,6 +97,7 @@ app.get('/files/:id', (req, res) => {
     });
 });
 
+// Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
