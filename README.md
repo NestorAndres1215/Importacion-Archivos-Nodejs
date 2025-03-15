@@ -87,19 +87,14 @@ El servidor se ejecutará en `http://localhost:3000/` y estará listo para recib
 
 Se ha utilizado **Bootstrap** para mejorar la apariencia del formulario y la tabla de archivos. Además, **FontAwesome** se usa para agregar iconos en los botones de acción.
 
-## Mejoras Futuras
 
-- Implementación de autenticación de usuarios.
-- Creación de una API REST para integraciones externas.
-- Implementación de roles y permisos para gestionar accesos.
-- Almacenamiento de archivos en **AWS S3** o **Google Cloud Storage**.
 
 ##  Pagina Principal
 ![image](https://github.com/user-attachments/assets/c0b70070-d485-4349-8565-c718be0ce770)
 
-## Apartado de Subir ARCHIVO
+## Apartado de Subir Archivo
 ![image](https://github.com/user-attachments/assets/794eedd6-9e32-44f3-9b8b-f00eb328a249)
-##apartado de listad
+## Apartado de Listado Archivo
 ![image](https://github.com/user-attachments/assets/9c3c8eb0-6366-4e41-96e7-e1183ffe0753)
 
 
