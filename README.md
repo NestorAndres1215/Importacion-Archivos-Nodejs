@@ -1,15 +1,15 @@
 # Proyecto de Subida de Archivos con Node.js y MySQL
 
-Este proyecto proporciona una solución completa para la **subida**, **almacenamiento** y **recuperación** de archivos utilizando **Node.js**, **Express** y **MySQL**. Permite a los usuarios subir archivos a un servidor, almacenarlos en una base de datos y recuperarlos según sea necesario. 
+Este proyecto proporciona una solución completa para la **subida**, **almacenamiento** y **recuperación** de archivos utilizando **Node.js**, **Express**, **EJS** y **MySQL**. Permite a los usuarios subir archivos a un servidor, almacenarlos en una base de datos y recuperarlos según sea necesario. Además, cuenta con un diseño moderno utilizando **Bootstrap** y **FontAwesome**.
 
 ## Características
 
-- **Subida de Archivos**: Permite a los usuarios cargar archivos a través de una interfaz sencilla.
+- **Subida de Archivos**: Permite a los usuarios cargar archivos a través de una interfaz sencilla con validaciones.
 - **Almacenamiento Seguro**: Los archivos se guardan tanto en el sistema de archivos como en una base de datos MySQL, asegurando accesibilidad y persistencia.
 - **Recuperación de Archivos**: Los archivos pueden ser fácilmente recuperados y descargados usando su ID.
-- **Listar Archivos**: Proporciona una lista de todos los archivos almacenados en el sistema.
+- **Listar Archivos**: Proporciona una lista de todos los archivos almacenados en el sistema con opciones de descarga.
 - **Gestión de Tipos de Archivos**: Permite restringir y validar los tipos de archivos permitidos para subir.
-- **Manejo de Errores**: Implementa gestión de errores para asegurar una experiencia de usuario fluida.
+- **Manejo de Errores con SweetAlert2**: Implementa alertas visuales para mejorar la experiencia del usuario.
 
 ## Tecnologías Utilizadas
 
@@ -18,6 +18,10 @@ Este proyecto proporciona una solución completa para la **subida**, **almacenam
 - **Multer** - Middleware para la gestión de archivos en Node.js.
 - **MySQL** - Sistema de gestión de bases de datos relacional.
 - **Sequelize** - ORM para interactuar con la base de datos MySQL.
+- **EJS** - Motor de plantillas para generar vistas dinámicas.
+- **Bootstrap** - Framework CSS para mejorar el diseño.
+- **FontAwesome** - Iconos para mejorar la interfaz visual.
+- **SweetAlert2** - Notificaciones y alertas personalizadas.
 
 ## Requisitos
 
@@ -29,7 +33,7 @@ Este proyecto proporciona una solución completa para la **subida**, **almacenam
 Clona el repositorio y ejecuta el siguiente comando para instalar las dependencias necesarias:
 
 ```sh
-npm install express multer mysql2 sequelize dotenv
+npm install express multer mysql2 sequelize dotenv ejs sweetalert2
 ```
 
 ## Configuración de la Base de Datos
@@ -72,6 +76,30 @@ El servidor se ejecutará en `http://localhost:3000/` y estará listo para recib
 
 ## Endpoints
 
+- **`GET /`** - Página principal con formulario para subir archivos.
 - **`POST /upload`** - Sube un archivo al servidor.
 - **`GET /files`** - Lista todos los archivos almacenados.
 - **`GET /files/:id`** - Recupera un archivo por su ID.
+
+
+
+## Diseño con Bootstrap y FontAwesome
+
+Se ha utilizado **Bootstrap** para mejorar la apariencia del formulario y la tabla de archivos. Además, **FontAwesome** se usa para agregar iconos en los botones de acción.
+
+## Mejoras Futuras
+
+- Implementación de autenticación de usuarios.
+- Creación de una API REST para integraciones externas.
+- Implementación de roles y permisos para gestionar accesos.
+- Almacenamiento de archivos en **AWS S3** o **Google Cloud Storage**.
+
+##  Pagina Principal
+![image](https://github.com/user-attachments/assets/c0b70070-d485-4349-8565-c718be0ce770)
+
+## Apartado de Subir ARCHIVO
+![image](https://github.com/user-attachments/assets/794eedd6-9e32-44f3-9b8b-f00eb328a249)
+##apartado de listad
+![image](https://github.com/user-attachments/assets/9c3c8eb0-6366-4e41-96e7-e1183ffe0753)
+
+
