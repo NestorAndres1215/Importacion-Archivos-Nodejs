@@ -13,6 +13,8 @@ app.set('views', path.join(__dirname, 'views'));
 // Archivos estáticos
 app.use(express.static(path.join(__dirname, '../css')));
 app.use(express.static(path.join(__dirname, '../uploads')));
+// Archivos estáticos (CSS / JS / imágenes)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middlewares
 app.use(cors());

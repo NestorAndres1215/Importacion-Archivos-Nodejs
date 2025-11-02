@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
             background-color: #f5f8ff;
             padding: 20px;
@@ -22,7 +23,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .container {
             background-color: #ffffff;
             padding: 30px;
@@ -31,7 +32,7 @@
             width: 100%;
             max-width: 900px;
         }
-        
+
         h1 {
             color: #333;
             margin-bottom: 30px;
@@ -39,30 +40,31 @@
             font-size: 28px;
             text-align: center;
         }
-        
+
         .table-container {
             overflow-x: auto;
             margin-bottom: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
             background-color: #fff;
         }
-        
+
         thead {
             background-color: #f8f9fa;
             border-bottom: 2px solid #e9ecef;
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 16px;
         }
-        
+
         th {
             color: #495057;
             font-weight: 600;
@@ -70,52 +72,52 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         td {
             border-bottom: 1px solid #e9ecef;
             color: #495057;
             font-size: 14px;
         }
-        
+
         tr:hover {
             background-color: #f8f9fa;
         }
-        
+
         tr:last-child td {
             border-bottom: none;
         }
-        
+
         .file-icon {
             font-size: 20px;
             margin-right: 10px;
             color: #3498db;
         }
-        
+
         .file-icon.pdf {
             color: #e74c3c;
         }
-        
+
         .file-icon.doc {
             color: #3498db;
         }
-        
+
         .file-icon.img {
             color: #2ecc71;
         }
-        
+
         .file-icon.zip {
             color: #f39c12;
         }
-        
+
         .file-icon.txt {
             color: #95a5a6;
         }
-        
+
         .file-name {
             display: flex;
             align-items: center;
         }
-        
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -131,25 +133,25 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-        
+
         .btn:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
         }
-        
+
         .btn i {
             margin-right: 6px;
         }
-        
+
         .delete-btn {
             background-color: #e74c3c;
             margin-left: 8px;
         }
-        
+
         .delete-btn:hover {
             background-color: #c0392b;
         }
-        
+
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -159,20 +161,20 @@
             transition: color 0.3s;
             margin-top: 10px;
         }
-        
+
         .back-btn:hover {
             color: #3498db;
         }
-        
+
         .back-btn i {
             margin-right: 6px;
         }
-        
+
         .search-container {
             display: flex;
             margin-bottom: 20px;
         }
-        
+
         .search-input {
             flex: 1;
             padding: 12px 16px;
@@ -181,11 +183,11 @@
             font-size: 14px;
             outline: none;
         }
-        
+
         .search-input:focus {
             border-color: #3498db;
         }
-        
+
         .search-btn {
             background-color: #3498db;
             color: white;
@@ -195,27 +197,27 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .search-btn:hover {
             background-color: #2980b9;
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 40px 0;
             color: #666;
         }
-        
+
         .empty-state i {
             font-size: 48px;
             color: #e0e0e0;
             margin-bottom: 20px;
         }
-        
+
         .empty-state p {
             margin-bottom: 20px;
         }
-        
+
         .file-badge {
             padding: 4px 8px;
             border-radius: 20px;
@@ -224,59 +226,61 @@
             color: #fff;
             text-transform: uppercase;
         }
-        
+
         .file-badge.pdf {
             background-color: #e74c3c;
         }
-        
+
         .file-badge.doc {
             background-color: #3498db;
         }
-        
+
         .file-badge.img {
             background-color: #2ecc71;
         }
-        
+
         .file-badge.zip {
             background-color: #f39c12;
         }
-        
+
         .file-badge.txt {
             background-color: #95a5a6;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 12px 8px;
             }
-            
+
             .action-buttons {
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
             }
-            
+
             .delete-btn {
                 margin-left: 0;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Lista de Archivos</h1>
-        
+
         <div class="search-container">
             <input type="text" placeholder="Buscar archivo..." class="search-input" id="searchInput">
             <button class="search-btn">
                 <i class="fas fa-search"></i>
             </button>
         </div>
-        
+
         <div class="table-container">
             <table>
                 <thead>
@@ -288,42 +292,51 @@
                     </tr>
                 </thead>
                 <tbody id="filesTableBody">
-                    <% if (files && files.length > 0) { %>
-                        <% files.forEach(file => { %>
+                    <% if (files && files.length> 0) { %>
+                        <% files.forEach(file=> { %>
                             <tr>
-                                <td><%= file.id %></td>
+                                <td>
+                                    <%= file.id %>
+                                </td>
                                 <td class="file-name">
-                                    <% let iconClass = "fas fa-file"; %>
-                                    <% let badgeClass = "file-badge"; %>
-                                    
-                                    <% if (file.type.includes('pdf')) { %>
-                                        <% iconClass += " pdf"; badgeClass += " pdf"; %>
-                                        <i class="fas fa-file-pdf file-icon pdf"></i>
-                                    <% } else if (file.type.includes('doc')) { %>
-                                        <% iconClass += " doc"; badgeClass += " doc"; %>
-                                        <i class="fas fa-file-word file-icon doc"></i>
-                                    <% } else if (file.type.includes('image')) { %>
-                                        <% iconClass += " img"; badgeClass += " img"; %>
-                                        <i class="fas fa-file-image file-icon img"></i>
-                                    <% } else if (file.type.includes('zip')) { %>
-                                        <% iconClass += " zip"; badgeClass += " zip"; %>
-                                        <i class="fas fa-file-archive file-icon zip"></i>
-                                    <% } else if (file.type.includes('text')) { %>
-                                        <% iconClass += " txt"; badgeClass += " txt"; %>
-                                        <i class="fas fa-file-alt file-icon txt"></i>
-                                    <% } else { %>
-                                        <i class="fas fa-file file-icon"></i>
-                                    <% } %>
-                                    
-                                    <%= file.name %>
+                                    <% let iconClass="fas fa-file" ; %>
+                                        <% let badgeClass="file-badge" ; %>
+
+                                            <% if (file.type.includes('pdf')) { %>
+                                                <% iconClass +=" pdf" ; badgeClass +=" pdf" ; %>
+                                                    <i class="fas fa-file-pdf file-icon pdf"></i>
+                                                    <% } else if (file.type.includes('doc')) { %>
+                                                        <% iconClass +=" doc" ; badgeClass +=" doc" ; %>
+                                                            <i class="fas fa-file-word file-icon doc"></i>
+                                                            <% } else if (file.type.includes('image')) { %>
+                                                                <% iconClass +=" img" ; badgeClass +=" img" ; %>
+                                                                    <i class="fas fa-file-image file-icon img"></i>
+                                                                    <% } else if (file.type.includes('zip')) { %>
+                                                                        <% iconClass +=" zip" ; badgeClass +=" zip" ; %>
+                                                                            <i
+                                                                                class="fas fa-file-archive file-icon zip"></i>
+                                                                            <% } else if (file.type.includes('text')) {
+                                                                                %>
+                                                                                <% iconClass +=" txt" ; badgeClass
+                                                                                    +=" txt" ; %>
+                                                                                    <i
+                                                                                        class="fas fa-file-alt file-icon txt"></i>
+                                                                                    <% } else { %>
+                                                                                        <i
+                                                                                            class="fas fa-file file-icon"></i>
+                                                                                        <% } %>
+
+                                                                                            <%= file.name %>
                                 </td>
                                 <td>
-                                    <% let type = file.type.split('/')[1]; %>
-                                    <% if (type) { %>
-                                        <span class="<%= badgeClass %>"><%= type %></span>
-                                    <% } else { %>
-                                        <%= file.type %>
-                                    <% } %>
+                                    <% let type=file.type.split('/')[1]; %>
+                                        <% if (type) { %>
+                                            <span class="<%= badgeClass %>">
+                                                <%= type %>
+                                            </span>
+                                            <% } else { %>
+                                                <%= file.type %>
+                                                    <% } %>
                                 </td>
                                 <td class="action-buttons">
                                     <a href="/files/<%= file.id %>" class="btn">
@@ -332,52 +345,31 @@
 
                                 </td>
                             </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="4">
-                                <div class="empty-state">
-                                    <i class="fas fa-folder-open"></i>
-                                    <p>No hay archivos disponibles</p>
-                                    <a href="/upload" class="btn">
-                                        <i class="fas fa-upload"></i> Subir Archivo
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    <% } %>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="empty-state">
+                                                <i class="fas fa-folder-open"></i>
+                                                <p>No hay archivos disponibles</p>
+                                                <a href="/upload" class="btn">
+                                                    <i class="fas fa-upload"></i> Subir Archivo
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% } %>
                 </tbody>
             </table>
         </div>
-        
+
         <a href="/" class="back-btn">
             <i class="fas fa-arrow-left"></i> Volver al inicio
         </a>
     </div>
+    <script src="/js/files.js">
 
-    <script>
-        // Búsqueda de archivos
-        const searchInput = document.getElementById('searchInput');
-        const filesTableBody = document.getElementById('filesTableBody');
-        
-        if (searchInput) {
-            searchInput.addEventListener('keyup', function() {
-                const searchTerm = this.value.toLowerCase();
-                const rows = filesTableBody.getElementsByTagName('tr');
-                
-                for (let i = 0; i < rows.length; i++) {
-                    const fileNameCell = rows[i].getElementsByClassName('file-name')[0];
-                    if (fileNameCell) {
-                        const fileName = fileNameCell.textContent.toLowerCase();
-                        if (fileName.includes(searchTerm)) {
-                            rows[i].style.display = '';
-                        } else {
-                            rows[i].style.display = 'none';
-                        }
-                    }
-                }
-            });
-        }
     </script>
 </body>
+
 </html>
