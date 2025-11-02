@@ -1,20 +1,21 @@
 const fs = require('fs');
 const path = require('path');
-const db = require('../db/database');
+const { query } = require('../db/database');
 const MENSAJES = require('../util/mensajes');
 
 const uploadDir = path.join(__dirname, '../../uploads');
 
-// Crear carpeta uploads si no existe
+// ✅ Crear carpeta uploads si no existe
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 // RENDER VISTAS
-const renderHome = (req, res) => res.render('index');
-const renderUpload = (req, res) => res.render('upload');
+const renderHome = (_, res) => res.render('index');
+const renderUpload = (_, res) => res.render('upload');
 
-// SUBIR ARCHIVO
+
+// ✅ SUBIR ARCHIVO
 const uploadFile = async (req, res) => {
     try {
         if (!req.file) {
@@ -24,11 +25,11 @@ const uploadFile = async (req, res) => {
         const { originalname, mimetype, buffer } = req.file;
         const filePath = path.join(uploadDir, originalname);
 
-        // Guardamos archivo físico
+        // Guardar archivo en disco
         fs.writeFileSync(filePath, buffer);
 
-        // Guardamos datos en la BD
-        await db.query(
+        // Guardar en BD
+        await query(
             'INSERT INTO file_model (name, type, data) VALUES (?, ?, ?)',
             [originalname, mimetype, buffer]
         );
@@ -41,10 +42,11 @@ const uploadFile = async (req, res) => {
     }
 };
 
-// LISTAR ARCHIVOS
-const listFiles = async (req, res) => {
+
+// ✅ LISTAR TODOS LOS ARCHIVOS
+const listFiles = async (_, res) => {
     try {
-        const [files] = await db.query('SELECT id, name, type FROM file_model ORDER BY id DESC');
+        const [files] = await query('SELECT id, name, type FROM file_model ORDER BY id DESC');
 
         res.render('files', {
             files,
@@ -57,12 +59,13 @@ const listFiles = async (req, res) => {
     }
 };
 
-// DESCARGAR ARCHIVO
+
+// ✅ DESCARGAR ARCHIVO POR ID
 const downloadFile = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const [[file]] = await db.query(
+        const [[file]] = await query(
             'SELECT name, type, data FROM file_model WHERE id = ?',
             [id]
         );
@@ -81,19 +84,19 @@ const downloadFile = async (req, res) => {
         res.status(500).send(MENSAJES.ERROR_DESCARGA);
     }
 };
-// ✅ LISTAR POR ID
+
+
+// ✅ BUSCAR POR ID (JSON)
 const getFileById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const [[file]] = await db.query(
+        const [[file]] = await query(
             'SELECT id, name, type FROM file_model WHERE id = ?',
             [id]
         );
 
-        if (!file) {
-            return res.status(404).json({ mensaje: MENSAJES.ARCHIVO_NO_ENCONTRADO });
-        }
+        if (!file) return res.status(404).json({ mensaje: MENSAJES.ARCHIVO_NO_ENCONTRADO });
 
         res.json(file);
 
@@ -103,12 +106,13 @@ const getFileById = async (req, res) => {
     }
 };
 
-// ✅ LISTAR POR NOMBRE (BÚSQUEDA LIKE)
+
+// ✅ BUSCAR POR NOMBRE
 const searchFiles = async (req, res) => {
     try {
-        const { nombre } = req.query;
+        const { nombre = "" } = req.query;
 
-        const [files] = await db.query(
+        const [files] = await query(
             'SELECT id, name, type FROM file_model WHERE name LIKE ? ORDER BY id DESC',
             [`%${nombre}%`]
         );
@@ -123,20 +127,17 @@ const searchFiles = async (req, res) => {
         res.status(500).render('files', { files: [], mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
     }
 };
-// LISTAR POR TIPO (BUSCAR POR MIME O EXTENSIÓN)
+
+
+// ✅ BUSCAR POR TIPO / EXTENSIÓN
 const searchFilesByType = async (req, res) => {
     try {
-        const { tipo } = req.query;
+        const { tipo = "" } = req.query;
 
-        if (!tipo || tipo.trim() === "") {
-            return res.redirect("/files");
-        }
-
-        const [files] = await db.query(
-            `SELECT id, name, type 
+        const [files] = await query(
+            `SELECT id, name, type
              FROM file_model 
-             WHERE type LIKE ? 
-             OR name LIKE ? 
+             WHERE type LIKE ? OR name LIKE ? 
              ORDER BY id DESC`,
             [`%${tipo}%`, `%${tipo}%`]
         );
@@ -151,14 +152,50 @@ const searchFilesByType = async (req, res) => {
         res.status(500).render('files', { files: [], mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
     }
 };
+// 📌 Estadísticas por tipo de archivo
+const getFileStats = async (req, res) => {
+    try {
+        // Total de archivos
+        const [[{ total }]] = await query('SELECT COUNT(*) AS total FROM file_model');
+
+        if (total === 0) {
+            return res.render('stats', { stats: [], mensaje: MENSAJES.SIN_ARCHIVOS });
+        }
+
+        // Conteo por tipo (sacamos solo la parte final del mime)
+        const [rows] = await query(`
+            SELECT 
+                SUBSTRING_INDEX(type, '/', -1) AS extension,
+                COUNT(*) AS cantidad
+            FROM file_model
+            GROUP BY extension
+            ORDER BY cantidad DESC;
+        `);
+
+        // Calculamos porcentajes
+        const stats = rows.map(item => ({
+            extension: item.extension,
+            cantidad: item.cantidad,
+            porcentaje: ((item.cantidad / total) * 100).toFixed(2) // 2 decimales
+        }));
+
+        res.render('stats', { stats, mensaje: null });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('stats', { stats: [], mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
+    }
+};
+
 
 module.exports = {
     renderHome,
     renderUpload,
     uploadFile,
-    searchFilesByType,
     listFiles,
-    getFileById,    // ✅ Nuevo
-    searchFiles,    // ✅ Nuevo
-    downloadFile
+    downloadFile,
+    getFileById,
+    searchFiles,
+    searchFilesByType,
+    getFileStats // ✅ Aquí
 };
