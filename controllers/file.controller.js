@@ -156,6 +156,7 @@ module.exports = {
     renderHome,
     renderUpload,
     uploadFile,
+    searchFilesByType,
     listFiles,
     getFileById,    // ✅ Nuevo
     searchFiles,    // ✅ Nuevo
