@@ -5,6 +5,7 @@ const Mensajes = {
     ERROR_SERVIDOR: 'Error al iniciar el servidor',
     QR_TEXTO_REQUERIDO: 'Debe ingresar un texto o URL',
     QR_GENERACION_ERROR: 'Error al generar el código QR',
+    ERROR_INICIAR_SERVIDOR: "No se pudo iniciar el servidor",
 };
 
 
