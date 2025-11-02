@@ -1,19 +1,20 @@
-// db.js
+// src/config/db.js
 const mysql = require('mysql2');
+const  MENSAJES  = require('../util/mensajes'); // Mensajes centralizados
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Cambia por tu usuario de MySQL
-    password: '12345', // Cambia por tu contraseña de MySQL
-    database: 'subida_archivos', // Cambia por el nombre de tu base de datos
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '12345',
+    database: process.env.DB_NAME || 'subida_archivos',
 });
 
-db.connect(err => {
+db.connect((err) => {
     if (err) {
-        console.error('Error al conectar a la base de datos: ', err);
+        console.error(`${MENSAJES.ERROR_DB}:`, err);
         return;
     }
-    console.log('Conectado a la base de datos MySQL');
+    console.log(MENSAJES.DB_CONECTADA);
 });
 
 module.exports = db;
