@@ -1,69 +1,43 @@
-body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .welcome-icon {
-            font-size: 4rem;
-            color: #fff;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        h1 {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn-custom {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 500;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .btn-upload {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-upload:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
-        .btn-files {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        .btn-files:hover {
-            background-color: #e0a800;
-            color: #212529;
-            transform: translateY(-2px);
-        }
-        .footer-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            margin-top: 2rem;
-            font-weight: 300;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 100%;
-        }
-        .card .container {
-            text-align: center;
-        }
+   .glass {
+       background: rgba(255, 255, 255, 0.15);
+       backdrop-filter: blur(12px);
+       -webkit-backdrop-filter: blur(12px);
+       border: 1px solid rgba(255, 255, 255, 0.2);
+   }
+
+   .btn-gradient {
+       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+       transition: all 0.3s ease;
+   }
+
+   .btn-gradient:hover {
+       background: linear-gradient(135deg, #2563eb, #1e40af);
+       transform: translateY(-2px);
+       box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+   }
+
+   .btn-orange {
+       background: linear-gradient(135deg, #f97316, #ea580c);
+   }
+
+   .btn-orange:hover {
+       background: linear-gradient(135deg, #ea580c, #dc2626);
+       transform: translateY(-2px);
+       box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4);
+   }
+
+   @keyframes fadeIn {
+       from {
+           opacity: 0;
+           transform: translateY(20px);
+       }
+
+       to {
+           opacity: 1;
+           transform: translateY(0);
+       }
+   }
+
+   .animate-fade-in {
+       animation: fadeIn 0.8s ease-out;
+   }

@@ -2,47 +2,87 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Archivos</title>
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
     <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 
-<body>
-    <!-- CARD CENTRADO -->
-    <div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
-        <div class="card">
-            <div class="container">
-                <i class="fas fa-folder-open welcome-icon"></i>
-                <h1>Bienvenido a tu Gestor de Archivos</h1>
+<body
+    class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
 
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <a href="/upload" class="btn-custom btn-upload">
-                        <i class="fas fa-upload"></i>
-                        Subir Archivo
-                    </a>
-                    <a href="/files" class="btn-custom btn-files">
-                        <i class="fas fa-file-alt"></i>
-                        Ver Archivos
-                    </a>
-                </div>
-
-                <div class="footer-text">
-                    Administra tus archivos de manera sencilla
-                </div>
-            </div>
+    <!-- Fondo con partículas flotantes -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div
+            class="absolute -top-10 -left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse">
+        </div>
+        <div
+            class="absolute -bottom-10 -right-10 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-500">
         </div>
     </div>
-    <!-- Bootstrap 5 JS (opcional) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Tarjeta principal con glassmorphism -->
+    <div class="relative z-10 max-w-md w-full animate-fade-in">
+        <div
+            class="glass rounded-3xl shadow-2xl p-8 text-center transform transition-all duration-500 hover:scale-[1.02]">
+
+            <!-- Ícono animado -->
+            <div class="flex justify-center mb-6">
+                <div class="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl animate-float shadow-lg">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7h18M3 12h18M3 17h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Título -->
+            <h1 class="text-3xl font-bold text-white mb-3 drop-shadow-md">
+                Bienvenido a tu <span class="text-orange-400">Gestor de Archivos</span>
+            </h1>
+            <p class="text-blue-100 text-sm mb-8">Organiza, sube y gestiona todo en un solo lugar</p>
+
+            <!-- Botones con gradiente -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/upload"
+                    class="btn-gradient btn-orange text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 shadow-lg transform transition-all hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Subir Archivo
+                    <span class="ml-2 animate-pulse">↑</span>
+                </a>
+
+                <a href="/files"
+                    class="bg-white/20 backdrop-blur-sm text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 border border-white/30 shadow-lg hover:bg-white/30 transition-all transform hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Ver Archivos
+                </a>
+            </div>
+
+            <!-- Footer -->
+            <p class="mt-8 text-xs text-blue-200">
+                Administra tus archivos de manera <span class="font-semibold text-orange-300">sencilla y segura</span>
+            </p>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
 </body>
 
 </html>
