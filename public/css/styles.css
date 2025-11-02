@@ -1,109 +1,69 @@
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+body {
             font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: #f5f8ff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
         }
-
-        .container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 40px;
-            font-weight: 600;
-            font-size: 32px;
-        }
-
         .welcome-icon {
-            font-size: 64px;
-            color: #3498db;
-            margin-bottom: 30px;
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-top: 20px;
+        h1 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 10px;
-            font-size: 17px;
+        .btn-custom {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
             font-weight: 500;
-            cursor: pointer;
+            border-radius: 50px;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
-        .btn:hover {
-            background-color: #2980b9;
+        .btn-upload {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-upload:hover {
+            background-color: #218838;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .btn i {
-            margin-right: 10px;
+        .btn-files {
+            background-color: #ffc107;
+            color: #212529;
         }
-
-        .btn.upload {
-            background-color: #3498db;
+        .btn-files:hover {
+            background-color: #e0a800;
+            color: #212529;
+            transform: translateY(-2px);
         }
-
-        .btn.files {
-            background-color: #2ecc71;
+        .footer-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-top: 2rem;
+            font-weight: 300;
         }
-
-        .btn.upload:hover {
-            background-color: #2980b9;
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
         }
-
-        .btn.files:hover {
-            background-color: #27ae60;
-        }
-
-        .footer {
-            margin-top: 40px;
-            color: #888;
-            font-size: 14px;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 28px;
-                margin-bottom: 30px;
-            }
-
-            .welcome-icon {
-                font-size: 56px;
-                margin-bottom: 20px;
-            }
+        .card .container {
+            text-align: center;
         }
