@@ -1,113 +1,158 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Archivos</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Archivos</title>
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/files.css">
 
-    <link rel="stylesheet" href="/css/files.css">
+
 </head>
 
-<body>
-<div class="container">
-  <div class="card mx-auto" style="max-width:900px;">
-    <div class="card-header text-center">
-      <h1 class="h3 mb-0">Lista de Archivos</h1>
-    </div>
+<body class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 min-h-screen flex items-center justify-center p-4  relative">
 
-    <div class="card-body p-4">
+  <!-- Fondo animado (igual que index) -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-10 -left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+    <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-500"></div>
+  </div>
+
+  <!-- Tarjeta principal -->
+  <div class="relative z-10 max-w-4xl w-full animate-fade-in">
+    <div class="glass rounded-3xl shadow-2xl p-8 text-center transform transition-all duration-500 hover:scale-[1.01]">
+
+      <!-- Ícono flotante -->
+      <div class="flex justify-center mb-6">
+        <div class="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl animate-float shadow-lg">
+          <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M3 7h18M3 12h18M3 17h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Título -->
+      <h1 class="text-3xl font-bold text-white mb-3 drop-shadow-md">
+        Lista de <span class="text-orange-400">Archivos</span>
+      </h1>
+      <p class="text-blue-100 text-sm mb-8">Administra y descarga tus archivos fácilmente</p>
 
       <!-- Búsqueda -->
-      <div class="input-group mb-4">
-        <input type="text" class="form-control form-control-lg" placeholder="Buscar archivo..." id="searchInput">
-        <button class="btn btn-outline-secondary btn-lg"><i class="fas fa-search"></i></button>
+      <div class="relative mb-8 max-w-md mx-auto">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Buscar archivo..." 
+          class="w-full pl-12 pr-6 py-4 rounded-xl bg-white/20 backdrop-blur-sm text-white placeholder-gray-300 border border-white/30 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all text-lg"
+        />
+        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
       </div>
 
-      <!-- Tabla -->
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr><th>ID</th><th>Nombre</th><th>Tipo</th><th>Acciones</th></tr>
-          </thead>
-          <tbody id="filesTableBody">
-            <% if (files && files.length > 0) { %>
-              <% files.forEach(file => { %>
+      <!-- Lista de archivos -->
+      <div class="space-y-4" id="filesContainer">
+        <% if (files && files.length > 0) { %>
+          <% files.forEach(file => { %>
+            <% 
+              const isDocx = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+              const isPdf  = file.type.includes('pdf');
+              const isImg  = file.type.includes('image');
+              const isZip  = file.type.includes('zip');
+              const isTxt  = file.type.includes('text');
+              let badgeColor = 'bg-gray-500';
+              let iconColor = 'text-gray-400';
+              let ext = (file.name.split('.').pop() || '').toUpperCase();
 
-                <% 
-                  // Detectar DOCX por MIME
-                  const isDocx = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                  const isPdf  = file.type.includes('pdf');
-                  const isImg  = file.type.includes('image');
-                  const isZip  = file.type.includes('zip');
-                  const isTxt  = file.type.includes('text');
+              if (isDocx || file.type.includes('msword')) { badgeColor = 'bg-blue-500'; iconColor = 'text-blue-400'; }
+              else if (isPdf)  { badgeColor = 'bg-red-500'; iconColor = 'text-red-400'; }
+              else if (isImg)  { badgeColor = 'bg-green-500'; iconColor = 'text-green-400'; }
+              else if (isZip)  { badgeColor = 'bg-yellow-500'; iconColor = 'text-yellow-400'; }
+              else if (isTxt)  { badgeColor = 'bg-gray-500'; iconColor = 'text-gray-400'; }
+            %>
 
-                  let icon  = 'fas fa-file';
-                  let color = '';
-                  let badge = 'bg-light text-dark';
-                  let ext   = (file.name.split('.').pop() || '').toUpperCase();
+            <div class="file-item flex items-center justify-between bg-white/5 backdrop-blur-sm rounded-2xl p-5 hover:bg-white/10 transition-all transform hover:scale-[1.02] hover:shadow-xl">
+              <div class="flex items-center gap-4">
+                <div class="p-3 bg-white/10 rounded-xl">
+                  <svg class="w-8 h-8 <%= iconColor %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="<%= isDocx || file.type.includes('msword') ? 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' : isPdf ? 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' : isImg ? 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' : isZip ? 'M12 10V2l-2 2 2 2-2 2 2 2m-4 6h8m-8-4h8m-8 8h8' : 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' %>"/>
+                  </svg>
+                </div>
+                <div class="text-left">
+                  <p class="font-semibold text-white text-lg"><%= file.name %></p>
+                  <p class="text-sm text-blue-200">#<%= file.id %> • <%= isDocx ? 'DOCX' : ext %></p>
+                </div>
+              </div>
 
-                  if (isDocx || file.type.includes('msword')) {
-                    icon = 'fas fa-file-word'; color = 'text-primary'; badge = 'bg-primary';
-                  } else if (isPdf)  { icon = 'fas fa-file-pdf';   color = 'text-danger';  badge = 'bg-danger'; }
-                  else if (isImg)   { icon = 'fas fa-file-image'; color = 'text-success'; badge = 'bg-success'; }
-                  else if (isZip)   { icon = 'fas fa-file-archive';color = 'text-warning';badge = 'bg-warning'; }
-                  else if (isTxt)   { icon = 'fas fa-file-alt';   color = 'text-secondary';badge = 'bg-secondary'; }
-                %>
-
-                <tr>
-                  <td class="text-muted"><%= file.id %></td>
-                  <td>
-                    <i class="<%= icon %> file-icon <%= color %>"></i>
-                    <span><%= file.name %></span>
-                  </td>
-                  <td>
-                    <span class="badge file-badge <%= badge %>">
-                      <%= isDocx ? 'DOCX' : ext || file.type.split('/')[1].toUpperCase() %>
-                    </span>
-                  </td>
-                  <td>
-                    <a href="/files/<%= file.id %>" class="btn btn-sm btn-outline-primary">
-                      <i class="fas fa-download"></i> Descargar
-                    </a>
-                  </td>
-                </tr>
-              <% }) %>
-            <% } else { %>
-              <tr>
-                <td colspan="4" class="empty-state">
-                  <i class="fas fa-folder-open"></i>
-                  <p class="mb-3">No hay archivos disponibles</p>
-                  <a href="/upload" class="btn btn-lg btn-success">
-                    <i class="fas fa-upload"></i> Subir Archivo
-                  </a>
-                </td>
-              </tr>
-            <% } %>
-          </tbody>
-        </table>
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-white <%= badgeColor %>">
+                  <%= isDocx ? 'DOCX' : ext %>
+                </span>
+                <!-- DESCARGA CON RUTA PÚBLICA -->
+                <a href="<%= file.path %>" download="<%= file.name %>" 
+                   class="btn-orange text-white font-semibold py-3 px-5 rounded-xl flex items-center gap-2 shadow-lg transform transition-all hover:scale-105">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                  </svg>
+                  Descargar
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <!-- Estado vacío -->
+          <div class="text-center py-12">
+            <svg class="w-20 h-20 text-gray-500 mx-auto mb-4 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2z"/>
+            </svg>
+            <p class="text-xl text-blue-200 mb-6">No hay archivos disponibles</p>
+            <a href="/upload" class="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold py-4 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+              Subir Archivo
+              <span class="animate-pulse">Upload</span>
+            </a>
+          </div>
+        <% } %>
       </div>
 
-      <div class="text-center">
-        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+      <!-- Volver -->
+      <div class="mt-8">
+        <a href="/" class="inline-flex items-center gap-2 text-orange-300 hover:text-orange-100 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Volver al inicio
+        </a>
       </div>
 
     </div>
   </div>
-</div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Tu JS (si lo tienes) -->
-    <script src="/js/files.js"></script>
+  <!-- Animación de entrada -->
+  <style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+  </style>
+
+  <!-- Búsqueda en tiempo real -->
+  <script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('.file-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  </script>
 </body>
-
 </html>
