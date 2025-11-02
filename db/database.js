@@ -1,20 +1,36 @@
-// src/config/db.js
-const mysql = require('mysql2');
-const  MENSAJES  = require('../util/mensajes'); // Mensajes centralizados
+// src/db/database.js
+const mysql = require('mysql2/promise');
+const MENSAJES = require('../util/mensajes');
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '12345',
-    database: process.env.DB_NAME || 'subida_archivos',
-});
+let pool;
 
-db.connect((err) => {
-    if (err) {
-        console.error(`${MENSAJES.ERROR_DB}:`, err);
-        return;
+async function conectarBD() {
+    try {
+        pool = await mysql.createPool({
+            host: process.env.DB_HOST ?? 'localhost',
+            user: process.env.DB_USER ?? 'root',
+            password: process.env.DB_PASSWORD ?? '12345',
+            database: process.env.DB_NAME ?? 'subida_archivos',
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0
+        });
+
+        console.log(`✅ ${MENSAJES.DB_CONECTADA}`);
+        return pool;
+
+    } catch (error) {
+        console.error(`❌ ${MENSAJES.ERROR_DB}: ${error.message}`);
+        throw error;
     }
-    console.log(MENSAJES.DB_CONECTADA);
-});
+}
 
-module.exports = db;
+// Esta función permite hacer consultas sin reconectar cada vez
+function query(sql, params) {
+    return pool.query(sql, params);
+}
+
+module.exports = {
+    conectarBD,
+    query
+};

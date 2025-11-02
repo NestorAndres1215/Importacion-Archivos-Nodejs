@@ -81,11 +81,83 @@ const downloadFile = async (req, res) => {
         res.status(500).send(MENSAJES.ERROR_DESCARGA);
     }
 };
+// ✅ LISTAR POR ID
+const getFileById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [[file]] = await db.query(
+            'SELECT id, name, type FROM file_model WHERE id = ?',
+            [id]
+        );
+
+        if (!file) {
+            return res.status(404).json({ mensaje: MENSAJES.ARCHIVO_NO_ENCONTRADO });
+        }
+
+        res.json(file);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
+    }
+};
+
+// ✅ LISTAR POR NOMBRE (BÚSQUEDA LIKE)
+const searchFiles = async (req, res) => {
+    try {
+        const { nombre } = req.query;
+
+        const [files] = await db.query(
+            'SELECT id, name, type FROM file_model WHERE name LIKE ? ORDER BY id DESC',
+            [`%${nombre}%`]
+        );
+
+        res.render('files', {
+            files,
+            mensaje: files.length === 0 ? MENSAJES.SIN_COINCIDENCIAS : null
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('files', { files: [], mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
+    }
+};
+// LISTAR POR TIPO (BUSCAR POR MIME O EXTENSIÓN)
+const searchFilesByType = async (req, res) => {
+    try {
+        const { tipo } = req.query;
+
+        if (!tipo || tipo.trim() === "") {
+            return res.redirect("/files");
+        }
+
+        const [files] = await db.query(
+            `SELECT id, name, type 
+             FROM file_model 
+             WHERE type LIKE ? 
+             OR name LIKE ? 
+             ORDER BY id DESC`,
+            [`%${tipo}%`, `%${tipo}%`]
+        );
+
+        res.render('files', {
+            files,
+            mensaje: files.length === 0 ? MENSAJES.SIN_COINCIDENCIAS : null
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('files', { files: [], mensaje: MENSAJES.ERROR_RECUPERAR_ARCHIVOS });
+    }
+};
 
 module.exports = {
     renderHome,
     renderUpload,
     uploadFile,
     listFiles,
+    getFileById,    // ✅ Nuevo
+    searchFiles,    // ✅ Nuevo
     downloadFile
 };
