@@ -5,111 +5,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Archivos</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/files.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Lista de Archivos</h1>
-
-        <div class="search-container">
-            <input type="text" placeholder="Buscar archivo..." class="search-input" id="searchInput">
-            <button class="search-btn">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="filesTableBody">
-                    <% if (files && files.length> 0) { %>
-                        <% files.forEach(file=> { %>
-                            <tr>
-                                <td>
-                                    <%= file.id %>
-                                </td>
-                                <td class="file-name">
-                                    <% let iconClass="fas fa-file" ; %>
-                                        <% let badgeClass="file-badge" ; %>
-
-                                            <% if (file.type.includes('pdf')) { %>
-                                                <% iconClass +=" pdf" ; badgeClass +=" pdf" ; %>
-                                                    <i class="fas fa-file-pdf file-icon pdf"></i>
-                                                    <% } else if (file.type.includes('doc')) { %>
-                                                        <% iconClass +=" doc" ; badgeClass +=" doc" ; %>
-                                                            <i class="fas fa-file-word file-icon doc"></i>
-                                                            <% } else if (file.type.includes('image')) { %>
-                                                                <% iconClass +=" img" ; badgeClass +=" img" ; %>
-                                                                    <i class="fas fa-file-image file-icon img"></i>
-                                                                    <% } else if (file.type.includes('zip')) { %>
-                                                                        <% iconClass +=" zip" ; badgeClass +=" zip" ; %>
-                                                                            <i
-                                                                                class="fas fa-file-archive file-icon zip"></i>
-                                                                            <% } else if (file.type.includes('text')) {
-                                                                                %>
-                                                                                <% iconClass +=" txt" ; badgeClass
-                                                                                    +=" txt" ; %>
-                                                                                    <i
-                                                                                        class="fas fa-file-alt file-icon txt"></i>
-                                                                                    <% } else { %>
-                                                                                        <i
-                                                                                            class="fas fa-file file-icon"></i>
-                                                                                        <% } %>
-
-                                                                                            <%= file.name %>
-                                </td>
-                                <td>
-                                    <% let type=file.type.split('/')[1]; %>
-                                        <% if (type) { %>
-                                            <span class="<%= badgeClass %>">
-                                                <%= type %>
-                                            </span>
-                                            <% } else { %>
-                                                <%= file.type %>
-                                                    <% } %>
-                                </td>
-                                <td class="action-buttons">
-                                    <a href="/files/<%= file.id %>" class="btn">
-                                        <i class="fas fa-download"></i> Descargar
-                                    </a>
-
-                                </td>
-                            </tr>
-                            <% }) %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="4">
-                                            <div class="empty-state">
-                                                <i class="fas fa-folder-open"></i>
-                                                <p>No hay archivos disponibles</p>
-                                                <a href="/upload" class="btn">
-                                                    <i class="fas fa-upload"></i> Subir Archivo
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-        </div>
-
-        <a href="/" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Volver al inicio
-        </a>
+<div class="container">
+  <div class="card mx-auto" style="max-width:900px;">
+    <div class="card-header text-center">
+      <h1 class="h3 mb-0">Lista de Archivos</h1>
     </div>
-    <script src="/js/files.js">
 
-    </script>
+    <div class="card-body p-4">
+
+      <!-- Búsqueda -->
+      <div class="input-group mb-4">
+        <input type="text" class="form-control form-control-lg" placeholder="Buscar archivo..." id="searchInput">
+        <button class="btn btn-outline-secondary btn-lg"><i class="fas fa-search"></i></button>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr><th>ID</th><th>Nombre</th><th>Tipo</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="filesTableBody">
+            <% if (files && files.length > 0) { %>
+              <% files.forEach(file => { %>
+
+                <% 
+                  // Detectar DOCX por MIME
+                  const isDocx = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                  const isPdf  = file.type.includes('pdf');
+                  const isImg  = file.type.includes('image');
+                  const isZip  = file.type.includes('zip');
+                  const isTxt  = file.type.includes('text');
+
+                  let icon  = 'fas fa-file';
+                  let color = '';
+                  let badge = 'bg-light text-dark';
+                  let ext   = (file.name.split('.').pop() || '').toUpperCase();
+
+                  if (isDocx || file.type.includes('msword')) {
+                    icon = 'fas fa-file-word'; color = 'text-primary'; badge = 'bg-primary';
+                  } else if (isPdf)  { icon = 'fas fa-file-pdf';   color = 'text-danger';  badge = 'bg-danger'; }
+                  else if (isImg)   { icon = 'fas fa-file-image'; color = 'text-success'; badge = 'bg-success'; }
+                  else if (isZip)   { icon = 'fas fa-file-archive';color = 'text-warning';badge = 'bg-warning'; }
+                  else if (isTxt)   { icon = 'fas fa-file-alt';   color = 'text-secondary';badge = 'bg-secondary'; }
+                %>
+
+                <tr>
+                  <td class="text-muted"><%= file.id %></td>
+                  <td>
+                    <i class="<%= icon %> file-icon <%= color %>"></i>
+                    <span><%= file.name %></span>
+                  </td>
+                  <td>
+                    <span class="badge file-badge <%= badge %>">
+                      <%= isDocx ? 'DOCX' : ext || file.type.split('/')[1].toUpperCase() %>
+                    </span>
+                  </td>
+                  <td>
+                    <a href="/files/<%= file.id %>" class="btn btn-sm btn-outline-primary">
+                      <i class="fas fa-download"></i> Descargar
+                    </a>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="4" class="empty-state">
+                  <i class="fas fa-folder-open"></i>
+                  <p class="mb-3">No hay archivos disponibles</p>
+                  <a href="/upload" class="btn btn-lg btn-success">
+                    <i class="fas fa-upload"></i> Subir Archivo
+                  </a>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center">
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Tu JS (si lo tienes) -->
+    <script src="/js/files.js"></script>
 </body>
 
 </html>
