@@ -4,12 +4,9 @@ const MENSAJES = require('../util/mensajes');
 
 let pool;
 
-/**
- * Conecta a la base de datos MySQL y crea un pool de conexiones.
- * @returns {Promise<Pool>} pool de conexiones
- */
+
 async function conectarBD() {
-  if (pool) return pool; // Reusar pool si ya existe
+  if (pool) return pool; 
 
   try {
     pool = await mysql.createPool({
@@ -31,12 +28,7 @@ async function conectarBD() {
   }
 }
 
-/**
- * Ejecuta una consulta SQL usando el pool de conexiones.
- * @param {string} sql Consulta SQL
- * @param {Array} params Parámetros de la consulta
- * @returns {Promise<[any[], any]>} Resultado de la consulta
- */
+
 async function query(sql, params = []) {
   if (!pool) {
     throw new Error('❌ Pool de base de datos no inicializado. Llama a conectarBD() primero.');

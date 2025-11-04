@@ -5,16 +5,18 @@ const { conectarBD } = require('./db/database');
 
 const PORT = process.env.PORT || 3000;
 
-(async () => {
-    try {
-        await conectarBD(); // Conectar BD antes de iniciar server
+(async function iniciarServidor() {
+  try {
+    // Conectar a la base de datos antes de iniciar el servidor
+    await conectarBD();
 
-        app.listen(PORT, () => {
-            console.log(`🚀 ${MENSAJES.SERVIDOR_CORRIENDO} → http://localhost:${PORT}`);
-        });
+    // Iniciar servidor
+    app.listen(PORT, () => {
+      console.log(`🚀 ${MENSAJES.SERVIDOR_CORRIENDO} → http://localhost:${PORT}`);
+    });
 
-    } catch (error) {
-        console.error(`❌ ${MENSAJES.ERROR_INICIAR_SERVIDOR}:`, error.message);
-        process.exit(1);
-    }
+  } catch (error) {
+    console.error(`❌ ${MENSAJES.ERROR_INICIAR_SERVIDOR}:`, error.message);
+    process.exit(1); // Salir del proceso si falla la conexión
+  }
 })();
