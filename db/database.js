@@ -4,33 +4,47 @@ const MENSAJES = require('../util/mensajes');
 
 let pool;
 
+/**
+ * Conecta a la base de datos MySQL y crea un pool de conexiones.
+ * @returns {Promise<Pool>} pool de conexiones
+ */
 async function conectarBD() {
-    try {
-        pool = await mysql.createPool({
-            host: process.env.DB_HOST ?? 'localhost',
-            user: process.env.DB_USER ?? 'root',
-            password: process.env.DB_PASSWORD ?? '12345',
-            database: process.env.DB_NAME ?? 'subida_archivos',
-            waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 0
-        });
+  if (pool) return pool; // Reusar pool si ya existe
 
-        console.log(`✅ ${MENSAJES.DB_CONECTADA}`);
-        return pool;
+  try {
+    pool = await mysql.createPool({
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '12345',
+      database: process.env.DB_NAME || 'subida_archivos',
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0
+    });
 
-    } catch (error) {
-        console.error(`❌ ${MENSAJES.ERROR_DB}: ${error.message}`);
-        throw error;
-    }
+    console.log(`✅ ${MENSAJES.DB_CONECTADA}`);
+    return pool;
+
+  } catch (error) {
+    console.error(`❌ ${MENSAJES.ERROR_DB}: ${error.message}`);
+    throw error;
+  }
 }
 
-// Esta función permite hacer consultas sin reconectar cada vez
-function query(sql, params) {
-    return pool.query(sql, params);
+/**
+ * Ejecuta una consulta SQL usando el pool de conexiones.
+ * @param {string} sql Consulta SQL
+ * @param {Array} params Parámetros de la consulta
+ * @returns {Promise<[any[], any]>} Resultado de la consulta
+ */
+async function query(sql, params = []) {
+  if (!pool) {
+    throw new Error('❌ Pool de base de datos no inicializado. Llama a conectarBD() primero.');
+  }
+  return pool.query(sql, params);
 }
 
 module.exports = {
-    conectarBD,
-    query
+  conectarBD,
+  query
 };
